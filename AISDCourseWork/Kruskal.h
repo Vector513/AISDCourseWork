@@ -8,9 +8,56 @@
 #include "Graph.h"
 
 class Kruskal {
+private:
+    void Heapify(std::vector<Graph::Edge>& edges, int heapSize, int i);
+    void BuildHeap(std::vector<Graph::Edge>& edges);
+    void HeapSort(std::vector<Graph::Edge>& edges);
+
 public:
     Graph findMST(const Graph& graph);
 };
+
+void Kruskal::Heapify(std::vector<Graph::Edge>& edges, int heapSize, int i) 
+{
+    while (true) {
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+        int largest = i;
+
+        if (left < heapSize && edges[left].weight > edges[largest].weight) {
+            largest = left;
+        }
+
+        if (right < heapSize && edges[right].weight > edges[largest].weight) {
+            largest = right;
+        }
+
+        if (largest != i) {
+            std::swap(edges[i], edges[largest]);
+            i = largest;
+        }
+        else {
+            break;
+        }
+    }
+}
+
+void Kruskal::BuildHeap(std::vector<Graph::Edge>& edges)
+{
+    for (int i = (edges.size() - 1) / 2; i >= 0; --i) {
+        Heapify(edges, edges.size(), i);
+    }
+}
+
+void Kruskal::HeapSort(std::vector<Graph::Edge>& edges) 
+{
+    BuildHeap(edges);
+
+    for (int i = edges.size() - 1; i > 0; --i) {
+        std::swap(edges[0], edges[i]);
+        Heapify(edges, i, 0);
+    }
+}
 
 Graph Kruskal::findMST(const Graph& graph)
 {
@@ -18,9 +65,7 @@ Graph Kruskal::findMST(const Graph& graph)
     int numVertices = graph.getVertexCount();
 
     std::vector<Graph::Edge> sortedEdges = edges;
-    std::sort(sortedEdges.begin(), sortedEdges.end(), [](const Graph::Edge& a, const Graph::Edge& b) {
-        return a.weight < b.weight;
-        });
+    HeapSort(sortedEdges);
 
     DisjointSet ds(numVertices);
 
