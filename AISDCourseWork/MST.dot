@@ -1,0 +1,14 @@
+graph G {
+  J -- K [label="19"];
+  G -- I [label="20"];
+  D -- K [label="61"];
+  A -- B [label="77"];
+  C -- M [label="119"];
+  K -- L [label="134"];
+  B -- J [label="135"];
+  E -- F [label="140"];
+  G -- H [label="151"];
+  F -- H [label="157"];
+  A -- G [label="204"];
+  F -- M [label="220"];
+}
